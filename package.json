@@ -1,0 +1,19 @@
+{
+  "name": "depict",
+  "version": "1.0.0",
+  "description": "A Pictionary-style chat game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ldanet/depict.git"
+  },
+  "author": "Lydie Danet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ldanet/depict/issues"
+  },
+  "homepage": "https://github.com/ldanet/depict#readme"
+}
