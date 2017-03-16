@@ -1,6 +1,13 @@
 # depict
 A Pictionary style chat game
 
+Usage
+---
+
+```sh
+npm start
+```
+
 Setup
 ---
 
