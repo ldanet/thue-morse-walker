@@ -19,7 +19,9 @@
     },
     "homepage": "https://github.com/ldanet/depict#readme",
     "dependencies": {
-        "express": "^4.15.2"
+        "express": "^4.15.2",
+        "react": "^15.4.2",
+        "react-dom": "^15.4.2"
     },
     "devDependencies": {
         "babel-core": "^6.23.1",
