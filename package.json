@@ -1,32 +1,32 @@
 {
-  "name": "depict",
-  "version": "1.0.0",
-  "description": "A Pictionary-style chat game",
-  "main": "index.js",
-  "scripts": {
-    "start": "node server.js",
-    "compile": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ldanet/depict.git"
-  },
-  "author": "Lydie Danet",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ldanet/depict/issues"
-  },
-  "homepage": "https://github.com/ldanet/depict#readme",
-  "dependencies": {
-    "express": "^4.15.2"
-  },
-  "devDependencies": {
-    "babel-core": "^6.23.1",
-    "babel-loader": "^6.4.0",
-    "babel-preset-env": "^1.2.1",
-    "babel-preset-react": "^6.23.0",
-    "webpack": "^2.2.1",
-    "webpack-dev-middleware": "^1.10.1"
-  }
+    "name": "depict",
+    "version": "1.0.0",
+    "description": "A Pictionary-style chat game",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server.js",
+        "compile": "webpack",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ldanet/depict.git"
+    },
+    "author": "Lydie Danet",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ldanet/depict/issues"
+    },
+    "homepage": "https://github.com/ldanet/depict#readme",
+    "dependencies": {
+        "express": "^4.15.2"
+    },
+    "devDependencies": {
+        "babel-core": "^6.23.1",
+        "babel-loader": "^6.4.0",
+        "babel-preset-env": "^1.2.1",
+        "babel-preset-react": "^6.23.0",
+        "webpack": "^2.2.1",
+        "webpack-dev-middleware": "^1.10.1"
+    }
 }
