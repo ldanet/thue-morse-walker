@@ -6,18 +6,21 @@ app.use(express.static(__dirname + '/www'));
 
 if (process.env.NODE_ENV !== 'production') {
     const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackHotMiddleware = require('webpack-hot-middleware');
     const webpack = require('webpack');
     const webpackConfig = require('./webpack.config.js');
     const compiler = webpack(webpackConfig);
 
+    app.use(webpackHotMiddleware(compiler));
     app.use(webpackDevMiddleware(compiler, {
-        hot: true,
         filename: 'bundle.js',
         publicPath: '/',
         stats: {
             colors: true,
         },
-        historyApiFallback: true,
+        watchOptions: {
+            poll: true
+        }
     }));
 }
 

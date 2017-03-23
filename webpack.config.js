@@ -1,8 +1,12 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     context: path.join(__dirname, 'src'),
+    devtool: 'eval',
     entry: [
+        'react-hot-loader/patch',
+        'webpack-hot-middleware/client',
         './main.js',
     ],
     output: {
@@ -25,4 +29,8 @@ module.exports = {
             path.join(__dirname, 'node_modules'),
         ],
     },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin()
+    ]
 };
