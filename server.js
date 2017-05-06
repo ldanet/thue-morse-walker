@@ -1,14 +1,16 @@
 const express = require('express');
-const app = express();
-const port = (process.env.PORT || 3000)
+const path = require('path');
 
-app.use(express.static(__dirname + '/www'));
+const app = express();
+const port = (process.env.PORT || 3000);
+
+app.use(express.static(path.join(__dirname, '/www')));
 
 if (process.env.NODE_ENV !== 'production') {
-    const webpackDevMiddleware = require('webpack-dev-middleware');
-    const webpackHotMiddleware = require('webpack-hot-middleware');
-    const webpack = require('webpack');
-    const webpackConfig = require('./webpack.config.js');
+    const webpackDevMiddleware = require('webpack-dev-middleware'); // eslint-disable-line global-require, no-extraneous-dependencies
+    const webpackHotMiddleware = require('webpack-hot-middleware'); // eslint-disable-line global-require, no-extraneous-dependencies
+    const webpack = require('webpack'); // eslint-disable-line global-require, no-extraneous-dependencies
+    const webpackConfig = require('./webpack.config.js'); // eslint-disable-line global-require, no-extraneous-dependencies
     const compiler = webpack(webpackConfig);
 
     app.use(webpackHotMiddleware(compiler));
@@ -19,12 +21,12 @@ if (process.env.NODE_ENV !== 'production') {
             colors: true,
         },
         watchOptions: {
-            poll: true
-        }
+            poll: true,
+        },
     }));
 }
 
-const server = app.listen(port, function() {
+const server = app.listen(port, () => {
     const host = server.address().address;
     const port = server.address().port;
     console.log('App listening at http://%s:%s', host, port);
