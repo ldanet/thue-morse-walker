@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
-import ChatRoom from './components/chatroom/room';
+import Layout from './components/layout';
 
 const DUMMY_MESSAGES = [
     {
@@ -19,17 +19,17 @@ const DUMMY_MESSAGES = [
     },
 ];
 
-const render = (Chat) => {
+const render = (Element) => {
     ReactDOM.render(
         <AppContainer>
-            <Chat messages={DUMMY_MESSAGES} />
+            <Element messages={DUMMY_MESSAGES} />
         </AppContainer>,
         document.getElementById('root'),
     );
 };
 
-render(ChatRoom);
+render(Layout);
 
 if (module.hot) {
-    module.hot.accept('./containers/app', () => { render(ChatRoom); });
+    module.hot.accept('./components/layout', () => { render(Layout); });
 }
