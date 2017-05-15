@@ -1,18 +1,17 @@
 import Promise from 'bluebird';
 
 function convertToBase(base, num) {
-    let str = '';
+    const digits = [];
     let remainder = num;
     do {
-        str = String(remainder % base) + str;
+        digits.unshift(remainder % base);
         remainder = Math.floor(remainder / base);
     } while (remainder > 0);
-    return str;
+    return digits;
 }
 
-function sumDigits(digitString) {
-    const digitArray = digitString.split('');
-    return digitArray.reduce((sum, digit) => sum + parseInt(digit, 10), 0);
+function sumDigits(digitArray) {
+    return digitArray.reduce((sum, digit) => sum + digit, 0);
 }
 function getSequenceElement(base, num) {
     const digits = convertToBase(base, num);
