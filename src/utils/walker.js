@@ -47,30 +47,99 @@ function drawSegment(ctx, { x: oldX, y: oldY }, { x: newX, y: newY }) {
     ctx.stroke();
 }
 
+function calculateAxisDirection(size, coordinate) {
+    let direction = 0;
+    if (coordinate < 0) {
+        direction = -1;
+    } else if (coordinate >= size) {
+        direction = 1;
+    }
+    return direction;
+}
+
+function calculateResizedCoord(coordinate, direction, size, amount = 2) {
+    // assume default center position
+    return ((coordinate / amount) + ((size / 2) - ((size / amount) / 2)))
+        + (-direction * ((size / 2) - ((size / amount) / 2)));
+}
+
+function calculateResizing(height, width, coords, newCoords, amount) {
+    let rAmount = amount;
+    const rCoords = Object.assign({}, coords);
+    const rNewCoords = Object.assign({}, newCoords);
+    const rDirection = {
+        x: calculateAxisDirection(width, rNewCoords.x),
+        y: calculateAxisDirection(height, rNewCoords.y),
+    };
+
+    while (
+        rNewCoords.x < 0 || rNewCoords.x > width ||
+        rNewCoords.y < 0 || rNewCoords.y > height
+    ) {
+        rAmount *= 2;
+        rNewCoords.length /= 2;
+
+        rCoords.x = calculateResizedCoord(rCoords.x, rDirection.x, width);
+        rNewCoords.x = calculateResizedCoord(rNewCoords.x, rDirection.x, width);
+
+        rCoords.y = calculateResizedCoord(rCoords.y, rDirection.y, height);
+        rNewCoords.y = calculateResizedCoord(rNewCoords.y, rDirection.y, height);
+    }
+    return {
+        coords: rCoords,
+        newCoords: rNewCoords,
+        amount: rAmount,
+        resizeDirection: rDirection,
+    };
+}
+
+function resizeCanvas(ctx, width, height, { x, y }, amount) {
+    if (amount !== 1) {
+        const translateX = calculateResizedCoord(0, x, width, amount);
+        const translateY = calculateResizedCoord(0, y, height, amount);
+        const img = new Image();
+        const canvasData = ctx.canvas.toDataURL();
+        img.src = canvasData;
+        ctx.clearRect(0, 0, width, height);
+        ctx.drawImage(img, translateX, translateY, width / amount, height / amount);
+        ctx.lineWidth /= amount;
+    }
+}
 
 export default function draw(canvas, ruleSet) {
     return new Promise((resolve, reject) => {
         if (!canvas || !canvas.getContext) {
             reject();
         } else {
+            const rules = [...ruleSet]; // make sure rules are not changed while drawing
             const height = canvas.height;
             const width = canvas.width;
             const ctx = canvas.getContext('2d');
 
             ctx.clearRect(0, 0, width, height);
+            ctx.lineWidth = 8;
 
-            let drawingState = {
+            let coords = {
                 x: width / 2,
                 y: height / 2,
                 angle: 0,
                 length: 64,
             };
-            let newDrawingState;
-            const rules = [...ruleSet]; // make sure rules are not changed while drawing
+
+            let newCoords;
+            let resizeDirection;
+            let amount;
             for (let i = 0; i < 2 ** 8; i += 1) {
-                newDrawingState = calculateNextStep(i, drawingState, rules);
-                drawSegment(ctx, drawingState, newDrawingState);
-                drawingState = newDrawingState;
+                newCoords = calculateNextStep(i, coords, rules);
+                ({
+                    coords,
+                    newCoords,
+                    amount,
+                    resizeDirection,
+                } = calculateResizing(height, width, coords, newCoords, 1));
+                resizeCanvas(ctx, width, height, resizeDirection, amount);
+                drawSegment(ctx, coords, newCoords);
+                coords = newCoords;
             }
             resolve();
         }
