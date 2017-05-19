@@ -20,9 +20,6 @@ if (process.env.NODE_ENV !== 'production') {
         stats: {
             colors: true,
         },
-        watchOptions: {
-            poll: true,
-        },
     }));
 }
 
