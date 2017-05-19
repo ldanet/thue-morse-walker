@@ -39,13 +39,6 @@ function calculateNextStep(i, { x, y, angle, length }, rules) {
     return { x: newX, y: newY, angle: newAngle, length };
 }
 
-function drawSegment(ctx, { x: oldX, y: oldY }, { x: newX, y: newY }) {
-    ctx.beginPath();
-    ctx.moveTo(oldX, oldY);
-    ctx.lineTo(newX, newY);
-    ctx.closePath();
-    ctx.stroke();
-}
 
 function calculateAxisDirection(size, coordinate) {
     let direction = 0;
@@ -94,16 +87,56 @@ function calculateResizing(height, width, coords, newCoords, amount) {
 }
 
 function resizeCanvas(ctx, width, height, { x, y }, amount) {
-    if (amount !== 1) {
-        const translateX = calculateResizedCoord(0, x, width, amount);
-        const translateY = calculateResizedCoord(0, y, height, amount);
-        const img = new Image();
-        const canvasData = ctx.canvas.toDataURL();
-        img.src = canvasData;
-        ctx.clearRect(0, 0, width, height);
-        ctx.drawImage(img, translateX, translateY, width / amount, height / amount);
-        ctx.lineWidth /= amount;
-    }
+    return new Promise((resolve, reject) => {
+        if (amount !== 1) {
+            const translateX = calculateResizedCoord(0, x, width, amount);
+            const translateY = calculateResizedCoord(0, y, height, amount);
+            const img = new Image();
+            const canvasData = ctx.canvas.toDataURL();
+            img.onload = function onload() {
+                try {
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.drawImage(img, translateX, translateY, width / amount, height / amount);
+                    ctx.lineWidth /= amount;
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+            };
+            img.src = canvasData;
+        } else {
+            resolve();
+        }
+    });
+}
+
+function drawSegment(ctx, { x: oldX, y: oldY }, { x: newX, y: newY }) {
+    ctx.beginPath();
+    ctx.moveTo(oldX, oldY);
+    ctx.lineTo(newX, newY);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+function drawStep({ ctx, i, coords: coordinates, rules }) {
+    return new Promise((resolve, reject) => {
+        const height = ctx.canvas.height;
+        const width = ctx.canvas.width;
+        let coords = coordinates;
+        let amount = 1;
+        let resizeDirection = 0;
+        let newCoords = calculateNextStep(i, coords, rules);
+        ({
+            coords,
+            newCoords,
+            amount,
+            resizeDirection,
+        } = calculateResizing(height, width, coords, newCoords, 1));
+        resizeCanvas(ctx, width, height, resizeDirection, amount).then(() => {
+            drawSegment(ctx, coords, newCoords);
+            resolve({ ctx, i: i + 1, coords: newCoords, rules });
+        }).catch(err => reject(err));
+    });
 }
 
 export default function draw(canvas, ruleSet) {
@@ -119,29 +152,19 @@ export default function draw(canvas, ruleSet) {
             ctx.clearRect(0, 0, width, height);
             ctx.lineWidth = 8;
 
-            let coords = {
+            const coords = {
                 x: width / 2,
                 y: height / 2,
                 angle: 0,
                 length: 64,
             };
 
-            let newCoords;
-            let resizeDirection;
-            let amount;
+            let promise = Promise.resolve({ ctx, i: 0, coords, rules });
             for (let i = 0; i < 2 ** 8; i += 1) {
-                newCoords = calculateNextStep(i, coords, rules);
-                ({
-                    coords,
-                    newCoords,
-                    amount,
-                    resizeDirection,
-                } = calculateResizing(height, width, coords, newCoords, 1));
-                resizeCanvas(ctx, width, height, resizeDirection, amount);
-                drawSegment(ctx, coords, newCoords);
-                coords = newCoords;
+                promise = promise.then((...args) => drawStep(...args),
+                );
             }
-            resolve();
+            promise.then(resolve).catch(reject);
         }
     });
 }
