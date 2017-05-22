@@ -6,7 +6,7 @@ export default class Layout extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isRendering: false,
+            isDrawing: false,
             rules: [
                 {
                     step: true,
@@ -21,15 +21,15 @@ export default class Layout extends Component {
     }
 
     startDrawing() {
-        if (!this.canvas || this.state.isRendering === true) {
+        if (!this.canvas || this.state.isDrawing === true) {
             // do nothing
         } else if (!this.canvas.getContext) {
             console.warn('Canvas is not supported');
         } else {
-            this.state.isRendering = true;
+            this.state.isDrawing = true;
             draw(this.canvas, this.state.rules).finally(() => {
                 console.log('Finished drawing');
-                this.state.isRendering = false;
+                this.state.isDrawing = false;
             });
         }
     }
@@ -46,7 +46,7 @@ export default class Layout extends Component {
                     id="renderButton"
                     onClick={() => this.startDrawing()}
                 >
-                    Render
+                    Draw
                 </button>
                 <button className={styles.button} id="stopButton">Stop</button>
             </div>
