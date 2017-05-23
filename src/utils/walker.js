@@ -118,7 +118,7 @@ function drawSegment(ctx, { x: oldX, y: oldY }, { x: newX, y: newY }) {
     ctx.stroke();
 }
 
-function drawStep({ ctx, i, coords: coordinates, rules }) {
+export default function drawStep({ ctx, i, coords: coordinates, rules }) {
     return new Promise((resolve, reject) => {
         const height = ctx.canvas.height;
         const width = ctx.canvas.width;
@@ -136,35 +136,5 @@ function drawStep({ ctx, i, coords: coordinates, rules }) {
             drawSegment(ctx, coords, newCoords);
             resolve({ ctx, i: i + 1, coords: newCoords, rules });
         }).catch(err => reject(err));
-    });
-}
-
-export default function draw(canvas, ruleSet) {
-    return new Promise((resolve, reject) => {
-        if (!canvas || !canvas.getContext) {
-            reject();
-        } else {
-            const rules = [...ruleSet]; // make sure rules are not changed while drawing
-            const height = canvas.height;
-            const width = canvas.width;
-            const ctx = canvas.getContext('2d');
-
-            ctx.clearRect(0, 0, width, height);
-            ctx.lineWidth = 8;
-
-            const coords = {
-                x: width / 2,
-                y: height / 2,
-                angle: 0,
-                length: 64,
-            };
-
-            let promise = Promise.resolve({ ctx, i: 0, coords, rules });
-            for (let i = 0; i < 2 ** 8; i += 1) {
-                promise = promise.then((...args) => drawStep(...args),
-                );
-            }
-            promise.then(resolve).catch(reject);
-        }
     });
 }
