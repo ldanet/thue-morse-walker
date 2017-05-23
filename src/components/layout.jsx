@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Promise from 'bluebird';
+import Rule from './rule/rule';
 import styles from './layout.css';
 import drawStep from '../utils/walker';
 
@@ -14,11 +15,11 @@ export default class Layout extends Component {
             rules: [
                 {
                     step: true,
-                    rotation: 60,
+                    angle: 60,
                 },
                 {
                     step: true,
-                    rotation: 180,
+                    angle: 180,
                 },
             ],
         };
@@ -92,6 +93,15 @@ export default class Layout extends Component {
     }
 
     render() {
+        const ruleForms = this.state.rules.map((rule, index) => (
+            <Rule
+                key={index}
+                id={index}
+                ruleSet={rule}
+                handleStepChange={this.handleStepChange}
+                handleAngleChange={this.handleAngleChange}
+            />
+        ));
         return (
             <div className={styles.container}>
                 <canvas
@@ -112,6 +122,7 @@ export default class Layout extends Component {
                 >
                     Stop
                 </button>
+                {ruleForms}
             </div>
         );
     }
