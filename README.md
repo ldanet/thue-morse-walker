@@ -1,5 +1,4 @@
-# depict
-A Pictionary style chat game
+# Thue-Morse Walker
 
 Usage
 ---

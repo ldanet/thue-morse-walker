@@ -1,7 +1,7 @@
 {
-    "name": "depict",
+    "name": "thue-morse-walker",
     "version": "1.0.0",
-    "description": "A Pictionary-style chat game",
+    "description": "Draws a graphic representation of the Thue-Morse sequence.",
     "main": "index.js",
     "scripts": {
         "start": "node server.js",
