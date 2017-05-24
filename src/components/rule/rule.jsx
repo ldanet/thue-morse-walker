@@ -3,13 +3,13 @@ import styles from './rule.css';
 
 export default function rule(props) {
     return (<form className={styles.rule}>
-        <label htmlFor={`angle${props.id}`}>Angle</label>
+        <label htmlFor={`angle${props.id}`}>Rotate</label>
         <input
             type="number"
             id={`angle${props.id}`}
             onChange={props.handleAngleChange}
-            value={props.ruleSet.angle}
-        />
+            value={props.ruleSet.rotation}
+        /> degrees
         <br />
         <input
             type="checkbox"

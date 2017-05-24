@@ -18,11 +18,11 @@ export default class Layout extends Component {
             rules: [
                 {
                     step: true,
-                    angle: 60,
+                    rotation: 60,
                 },
                 {
                     step: true,
-                    angle: 180,
+                    rotation: 180,
                 },
             ],
         };
@@ -35,7 +35,7 @@ export default class Layout extends Component {
                 id={index}
                 ruleSet={rule}
                 handleStepChange={this.handleStepChange}
-                handleAngleChange={this.handleAngleChange}
+                handleRotationChange={this.handleRotationChange}
             />
         ));
         return (
