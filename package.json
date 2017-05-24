@@ -8,16 +8,13 @@
         "compile": "webpack",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ldanet/depict.git"
-    },
+    "repository": "gitlab:ldanet/thue-morse-walker",
     "author": "Lydie Danet",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/ldanet/depict/issues"
+        "url": "https://gitlab.com/ldanet/thue-morse-walker/issues"
     },
-    "homepage": "https://github.com/ldanet/depict#readme",
+    "homepage": "https://gitlab.com/ldanet/thue-morse-walker",
     "dependencies": {
         "bluebird": "^3.5.0",
         "express": "^4.15.2",
