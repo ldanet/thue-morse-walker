@@ -84,21 +84,25 @@ export default class Canvas extends Component {
                 <canvas
                     className={styles.canvas}
                     ref={(canvas) => { this.canvas = canvas; }}
+                    width="1000"
+                    height="600"
                 />
-                <button
-                    className={styles.button}
-                    id="renderButton"
-                    onClick={() => this.startDrawing()}
-                >
-                    Draw
-                </button>
-                <button
-                    className={styles.button}
-                    id="stopButton"
-                    onClick={() => this.stopDrawing()}
-                >
-                    Stop
-                </button>
+                <div className={styles.controls}>
+                    <button
+                        className={styles.button}
+                        id="renderButton"
+                        onClick={() => this.startDrawing()}
+                    >
+                        Draw
+                    </button>
+                    <button
+                        className={styles.button}
+                        id="stopButton"
+                        onClick={() => this.stopDrawing()}
+                    >
+                        Stop
+                    </button>
+                </div>
             </div>
         );
     }

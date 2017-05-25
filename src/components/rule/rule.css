@@ -1,0 +1,26 @@
+.rule {
+    display: flex;
+    flex-direction: row;
+}
+.rule + .rule {
+    margin-top: 20px;
+}
+.id {
+    flex-grow: 0;
+    padding: 20px;
+    flex: auto;
+}
+.delete {
+    flex-grow: 0;
+    padding: 20px;
+    flex: auto;
+}
+.properties {
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+    flex-grow: 1;
+}
+.property {
+    padding: 20px;
+}
