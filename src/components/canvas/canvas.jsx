@@ -18,7 +18,6 @@ export default class Canvas extends Component {
         if (this.setState.stopDrawing === true) {
             return Promise.reject(new Error(USER_STOP_MESSAGE));
         }
-        console.log('Step:', ...args);
         return drawStep(...args);
     }
 
@@ -31,8 +30,6 @@ export default class Canvas extends Component {
         const height = canvas.height;
         const width = canvas.width;
         const ctx = canvas.getContext('2d');
-
-        console.log('Rules', rules, ctx);
 
         ctx.clearRect(0, 0, width, height); // clear canvas before starting new drawing
         ctx.lineWidth = 8;
