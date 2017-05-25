@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import Promise from 'bluebird';
 import Rule from './rule/rule';
 import Canvas from './canvas/canvas';
 import styles from './layout.css';
-import drawStep from '../utils/walker';
-
-const USER_STOP_MESSAGE = 'Stopping drawing on user request';
 
 export default class Layout extends Component {
     constructor(props) {
