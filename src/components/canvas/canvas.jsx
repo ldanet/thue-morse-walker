@@ -42,7 +42,7 @@ export default class Canvas extends Component {
         };
 
         let promise = Promise.resolve({ ctx, i: 0, coords, rules });
-        for (let i = 0; i < 2 ** this.props.options.cycles; i += 1) {
+        for (let i = 0; i < rules.length ** this.props.options.cycles; i += 1) {
             promise = promise.then((...args) => this.step(...args));
         }
         return promise;
