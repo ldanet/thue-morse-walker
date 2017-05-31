@@ -8,10 +8,21 @@ const USER_STOP_MESSAGE = 'Stopping drawing on user request';
 export default class Canvas extends Component {
     constructor(props) {
         super(props);
+        this.changeCycles = this.changeCycles.bind(this);
         this.state = {
             isDrawing: false,
             stopDrawing: false,
+            delay: 0,
+            cycles: 8,
         };
+    }
+
+    changeCycles(e) {
+        this.setState({ cycles: parseInt(e.target.value, 10) });
+    }
+
+    changeDelay(e) {
+        this.setState({ delay: parseInt(e.target.value, 10) });
     }
 
     step(...args) {
@@ -42,7 +53,7 @@ export default class Canvas extends Component {
         };
 
         let promise = Promise.resolve({ ctx, i: 0, coords, rules });
-        for (let i = 0; i < rules.length ** this.props.options.cycles; i += 1) {
+        for (let i = 0; i < rules.length ** this.state.cycles; i += 1) {
             promise = promise.then((...args) => this.step(...args));
         }
         return promise;
@@ -88,6 +99,24 @@ export default class Canvas extends Component {
                     height="600"
                 />
                 <div className={styles.controls}>
+                    <div className={styles.control}>
+                        <label htmlFor="cycles">Cycles: </label>
+                        <input
+                            type="number"
+                            id="cycles"
+                            value={this.state.cycles}
+                            onChange={this.changeCycles}
+                        />
+                    </div>
+                    <div className={styles.control}>
+                        <label htmlFor="delay">Delay: </label>
+                        <input
+                            type="number"
+                            id="delay"
+                            value={this.state.delay}
+                            onChange={this.changeDelay}
+                        />ms
+                    </div>
                     <button
                         className={styles.button}
                         id="renderButton"

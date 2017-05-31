@@ -11,10 +11,6 @@ export default class Layout extends Component {
         this.handleDeleteRule = this.handleDeleteRule.bind(this);
         this.handleAddRule = this.handleAddRule.bind(this);
         this.state = {
-            options: {
-                delay: 0,
-                cycles: 8,
-            },
             rules: [
                 {
                     step: true,
