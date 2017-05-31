@@ -63,8 +63,17 @@ export default class Layout extends Component {
         ));
         return (
             <div className={styles.container}>
+                <h1>Thue-Morse walker</h1>
                 <Canvas options={this.state.options} rules={this.state.rules} />
-                {ruleForms}
+                <h2>Rules</h2>
+                <table>
+                    <thead>
+                        <tr><th>Element</th><th>Rotation</th><th>Step</th><th /></tr>
+                    </thead>
+                    <tbody>
+                        {ruleForms}
+                    </tbody>
+                </table>
                 <button title="Add rule" onClick={this.handleAddRule}>+</button>
             </div>
         );

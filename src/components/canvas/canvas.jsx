@@ -95,8 +95,8 @@ export default class Canvas extends Component {
                 <canvas
                     className={styles.canvas}
                     ref={(canvas) => { this.canvas = canvas; }}
-                    width="1000"
-                    height="600"
+                    width="500"
+                    height="500"
                 />
                 <div className={styles.controls}>
                     <div className={styles.control}>
