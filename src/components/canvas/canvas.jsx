@@ -10,6 +10,8 @@ export default class Canvas extends Component {
         super(props);
         this.changeCycles = this.changeCycles.bind(this);
         this.changeDelay = this.changeDelay.bind(this);
+        this.startDrawing = this.startDrawing.bind(this);
+        this.stopDrawing = this.stopDrawing.bind(this);
         this.state = {
             isDrawing: false,
             stopDrawing: false,
@@ -96,6 +98,24 @@ export default class Canvas extends Component {
     }
 
     render() {
+        let button;
+        if (!this.state.isDrawing) {
+            button = (<button
+                className={styles.button}
+                id="renderButton"
+                onClick={this.startDrawing}
+            >
+                Draw
+            </button>);
+        } else {
+            button = (<button
+                className={styles.button}
+                id="stopButton"
+                onClick={this.stopDrawing}
+            >
+                Stop
+            </button>);
+        }
         return (
             <div>
                 <canvas
@@ -123,20 +143,7 @@ export default class Canvas extends Component {
                             onChange={this.changeDelay}
                         />ms
                     </div>
-                    <button
-                        className={styles.button}
-                        id="renderButton"
-                        onClick={() => this.startDrawing()}
-                    >
-                        Draw
-                    </button>
-                    <button
-                        className={styles.button}
-                        id="stopButton"
-                        onClick={() => this.stopDrawing()}
-                    >
-                        Stop
-                    </button>
+                    {button}
                 </div>
             </div>
         );
