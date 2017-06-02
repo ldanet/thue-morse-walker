@@ -9,6 +9,7 @@ export default class Canvas extends Component {
     constructor(props) {
         super(props);
         this.changeCycles = this.changeCycles.bind(this);
+        this.changeDelay = this.changeDelay.bind(this);
         this.state = {
             isDrawing: false,
             stopDrawing: false,
@@ -22,14 +23,19 @@ export default class Canvas extends Component {
     }
 
     changeDelay(e) {
-        this.setState({ delay: parseInt(e.target.value, 10) });
+        this.setState({ delay: Math.max(0, parseInt(e.target.value, 10)) });
     }
 
     step(...args) {
-        if (this.setState.stopDrawing === true) {
-            return Promise.reject(new Error(USER_STOP_MESSAGE));
-        }
-        return drawStep(...args);
+        return new Promise((resolve, reject) => {
+            if (this.state.stopDrawing === true) {
+                reject(new Error(USER_STOP_MESSAGE));
+            } else {
+                setTimeout(() => {
+                    resolve(drawStep(...args));
+                }, this.state.delay);
+            }
+        });
     }
 
     draw() {
@@ -65,7 +71,7 @@ export default class Canvas extends Component {
         } else if (!this.canvas.getContext) {
             console.warn('Canvas is not supported');
         } else {
-            this.state.isDrawing = true;
+            this.setState({ isDrawing: true });
             this.draw(this.canvas, this.state.rules)
             .catch(
                 (err) => {
