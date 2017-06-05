@@ -68,7 +68,7 @@ export default class Layout extends Component {
                 <h2>Rules</h2>
                 <table>
                     <thead>
-                        <tr><th>Element</th><th>Rotation</th><th>Step</th><th /></tr>
+                        <tr><th>Element</th><th>Rotate</th><th>Step</th><th /></tr>
                     </thead>
                     <tbody>
                         {ruleForms}

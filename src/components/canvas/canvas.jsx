@@ -126,7 +126,9 @@ export default class Canvas extends Component {
                 />
                 <div className={styles.controls}>
                     <div className={styles.control}>
-                        <label htmlFor="cycles">Cycles: </label>
+                        <label htmlFor="cycles">
+                            Number of steps: {this.props.rules.length}&nbsp;^&nbsp;
+                        </label>
                         <input
                             type="number"
                             id="cycles"
