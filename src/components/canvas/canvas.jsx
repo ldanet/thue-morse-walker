@@ -45,7 +45,9 @@ export default class Canvas extends Component {
         if (!canvas || !canvas.getContext) {
             return Promise.reject();
         }
-        const rules = [...this.props.rules]; // make sure drawing rules will not change
+        const rules = this.props.rules.map(rule =>
+            Object.assign({}, rule),
+        ); // make sure drawing rules will not change
         const height = canvas.height;
         const width = canvas.width;
         const ctx = canvas.getContext('2d');
