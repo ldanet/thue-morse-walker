@@ -4,25 +4,10 @@ import { AppContainer } from 'react-hot-loader';
 
 import Layout from './components/layout';
 
-const DUMMY_MESSAGES = [
-    {
-        sender: 'server',
-        content: 'Welcome on Depict!',
-    },
-    {
-        sender: 'Tom',
-        content: 'Hi there!',
-    },
-    {
-        sender: 'Eva',
-        content: 'Hello',
-    },
-];
-
 const render = (Element) => {
     ReactDOM.render(
         <AppContainer>
-            <Element messages={DUMMY_MESSAGES} />
+            <Element />
         </AppContainer>,
         document.getElementById('root'),
     );
