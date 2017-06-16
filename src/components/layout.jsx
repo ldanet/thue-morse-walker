@@ -8,6 +8,7 @@ export default class Layout extends Component {
         super(props);
         this.handleStepChange = this.handleStepChange.bind(this);
         this.handleRotationChange = this.handleRotationChange.bind(this);
+        this.handleColorChange = this.handleColorChange.bind(this);
         this.handleDeleteRule = this.handleDeleteRule.bind(this);
         this.handleAddRule = this.handleAddRule.bind(this);
         this.state = {
@@ -15,10 +16,12 @@ export default class Layout extends Component {
                 {
                     step: true,
                     rotation: 60,
+                    color: { h: 350, s: 0.8, l: 0.5 },
                 },
                 {
                     step: true,
                     rotation: 180,
+                    color: { h: 212.5, s: 0.8, l: 0.5 },
                 },
             ],
         };
@@ -36,8 +39,15 @@ export default class Layout extends Component {
         this.setState({ rules });
     }
 
+    handleColorChange(index, e) {
+        this.setState((state) => {
+            const newState = JSON.parse(JSON.stringify(state));
+            newState.rules[index].color = Object.assign({}, e.hsl);
+            return newState;
+        });
+    }
+
     handleDeleteRule(index) {
-        console.log(index);
         const rules = [...this.state.rules];
         rules.splice(index, 1);
         this.setState({ rules });
@@ -46,6 +56,11 @@ export default class Layout extends Component {
     handleAddRule() {
         const rules = [...this.state.rules];
         const newRule = Object.assign({}, rules[rules.length - 1]); // Duplicate last rule
+        newRule.color = Object.assign(
+            {},
+            newRule.color,
+            { h: (newRule.color.h + (222.5)) % 360 },
+        );
         rules.push(newRule);
         this.setState({ rules });
     }
@@ -58,6 +73,7 @@ export default class Layout extends Component {
                 ruleSet={rule}
                 handleStepChange={this.handleStepChange}
                 handleRotationChange={this.handleRotationChange}
+                handleColorChange={this.handleColorChange}
                 handleDeleteRule={this.handleDeleteRule}
             />
         ));
@@ -68,7 +84,13 @@ export default class Layout extends Component {
                 <h2>Rules</h2>
                 <table>
                     <thead>
-                        <tr><th>Element</th><th>Rotate</th><th>Step</th><th /></tr>
+                        <tr>
+                            <th>Element</th>
+                            <th>Rotate</th>
+                            <th>Step</th>
+                            <th>Color</th>
+                            <th />
+                        </tr>
                     </thead>
                     <tbody>
                         {ruleForms}

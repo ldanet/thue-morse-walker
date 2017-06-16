@@ -1,4 +1,5 @@
 import React from 'react';
+import ColorPicker from '../colorPicker/colorPicker';
 import styles from './rule.css';
 
 export default function rule(props) {
@@ -18,6 +19,13 @@ export default function rule(props) {
                 id={`step${props.index}`}
                 onChange={e => props.handleStepChange(props.index, e)}
                 checked={props.ruleSet.step}
+            />
+        </td>
+        <td className={styles.color}>
+            <ColorPicker
+                index={props.index}
+                color={props.ruleSet.color}
+                handleColorChange={props.handleColorChange}
             />
         </td>
         <td className={styles.delete}>

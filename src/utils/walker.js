@@ -22,7 +22,7 @@ function getSequenceElement(base, num) {
 function calculateNextStep(i, { x, y, angle, length }, rules) {
     const base = rules.length;
     const sequenceElement = getSequenceElement(base, i);
-    const { step, rotation } = rules[sequenceElement];
+    const { step, rotation, color } = rules[sequenceElement];
     const newAngle = (angle + rotation) % 360;
     let newX;
     let newY;
@@ -36,7 +36,7 @@ function calculateNextStep(i, { x, y, angle, length }, rules) {
         newY = y;
     }
 
-    return { x: newX, y: newY, angle: newAngle, length };
+    return { x: newX, y: newY, angle: newAngle, length, color };
 }
 
 
@@ -110,8 +110,9 @@ function resizeCanvas(ctx, width, height, { x, y }, amount) {
     });
 }
 
-function drawSegment(ctx, { x: oldX, y: oldY }, { x: newX, y: newY }) {
+function drawSegment(ctx, { x: oldX, y: oldY }, { x: newX, y: newY, color }) {
     ctx.beginPath();
+    ctx.strokeStyle = `hsl(${color.h},${color.s * 100}%,${color.l * 100}%)`;
     ctx.moveTo(oldX, oldY);
     ctx.lineTo(newX, newY);
     ctx.closePath();

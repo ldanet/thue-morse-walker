@@ -19,7 +19,9 @@
         "bluebird": "^3.5.0",
         "express": "^4.15.2",
         "react": "^15.4.2",
-        "react-dom": "^15.4.2"
+        "react-color": "^2.12.1",
+        "react-dom": "^15.4.2",
+        "react-onclickoutside": "^6.1.1"
     },
     "devDependencies": {
         "babel-core": "^6.23.1",
