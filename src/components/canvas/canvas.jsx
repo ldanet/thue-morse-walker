@@ -54,6 +54,8 @@ export default class Canvas extends Component {
 
         ctx.clearRect(0, 0, width, height); // clear canvas before starting new drawing
         ctx.lineWidth = 8;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
 
         const coords = {
             x: width / 2,
