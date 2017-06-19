@@ -32,6 +32,7 @@ export default function rule(props) {
             <button
                 title="Delete rule"
                 onClick={() => props.handleDeleteRule(props.index)}
+                disabled={!props.deleteable}
             >X</button>
         </td>
     </tr>);

@@ -49,8 +49,10 @@ export default class Layout extends Component {
 
     handleDeleteRule(index) {
         const rules = [...this.state.rules];
-        rules.splice(index, 1);
-        this.setState({ rules });
+        if (rules.length > 2) {
+            rules.splice(index, 1);
+            this.setState({ rules });
+        }
     }
 
     handleAddRule() {
@@ -75,6 +77,7 @@ export default class Layout extends Component {
                 handleRotationChange={this.handleRotationChange}
                 handleColorChange={this.handleColorChange}
                 handleDeleteRule={this.handleDeleteRule}
+                deleteable={this.state.rules.length > 2}
             />
         ));
         return (
