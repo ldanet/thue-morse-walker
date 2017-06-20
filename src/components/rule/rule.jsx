@@ -1,4 +1,5 @@
 import React from 'react';
+import FloatInput from '../floatInput/floatInput';
 import ColorPicker from '../colorPicker/colorPicker';
 import styles from './rule.css';
 
@@ -6,8 +7,7 @@ export default function rule(props) {
     return (<tr className={styles.rule}>
         <td className={styles.index}>{props.index}</td>
         <td className={styles.property}>
-            <input
-                type="number"
+            <FloatInput
                 id={`angle${props.index}`}
                 onChange={e => props.handleRotationChange(props.index, e)}
                 value={props.ruleSet.rotation}

@@ -35,7 +35,8 @@ export default class Layout extends Component {
 
     handleRotationChange(index, e) {
         const rules = [...this.state.rules];
-        rules[index].rotation = parseInt(e.target.value, 10);
+        const angle = parseFloat(e.target.value);
+        rules[index].rotation = isNaN(angle) ? 0 : angle;
         this.setState({ rules });
     }
 
