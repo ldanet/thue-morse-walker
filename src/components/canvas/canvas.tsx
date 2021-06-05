@@ -14,6 +14,8 @@ type Props = {
 
 const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasWidth = useRef<number>(window.innerWidth);
+  const canvasHeight = useRef<number>(window.innerHeight);
   const [isDrawing, setIsDrawing] = useState(false);
   const stopDrawing = useRef(false);
 
@@ -44,8 +46,8 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
       return Promise.reject();
     }
 
-    const height = canvas.height;
-    const width = canvas.width;
+    const height = canvasHeight.current;
+    const width = canvasWidth.current;
     const ctx = canvas.getContext("2d");
 
     if (!ctx) {
@@ -81,19 +83,25 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
       console.warn("Canvas is not supported");
     } else {
       setIsDrawing(true);
-      draw()
-        .catch((err) => {
-          if (err.message === USER_STOP_MESSAGE) {
-            console.log(USER_STOP_MESSAGE);
-          } else {
-            console.error(err);
-          }
-        })
-        .finally(() => {
-          console.log("Finished drawing");
-          setIsDrawing(false);
-          setStopDrawing(false);
-        });
+      canvasWidth.current = window.innerWidth;
+      canvasHeight.current = window.innerHeight;
+      setTimeout(
+        () =>
+          draw()
+            .catch((err) => {
+              if (err.message === USER_STOP_MESSAGE) {
+                console.log(USER_STOP_MESSAGE);
+              } else {
+                console.error(err);
+              }
+            })
+            .finally(() => {
+              console.log("Finished drawing");
+              setIsDrawing(false);
+              stopDrawing.current = false;
+            }),
+        0
+      );
     }
   }, [isDrawing, draw]);
 
@@ -104,19 +112,20 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
   }, [isDrawing]);
 
   return (
-    <div>
-      <canvas className="canvas" ref={canvasRef} width="500" height="500" />
-      <div>
-        Total sequence length: {rules.length}&nbsp;^&nbsp;{cycles} ={" "}
-        {rules.length ** cycles}
-        <button
-          className="draw-button"
-          onClick={isDrawing ? handleStopDrawing : startDrawing}
-        >
-          {isDrawing ? "Stop" : "Draw"}
-        </button>
-      </div>
-    </div>
+    <>
+      <canvas
+        className="canvas"
+        ref={canvasRef}
+        width={canvasWidth.current}
+        height={canvasHeight.current}
+      />
+      <button
+        className="draw-button"
+        onClick={isDrawing ? handleStopDrawing : startDrawing}
+      >
+        {isDrawing ? "Stop" : "Draw"}
+      </button>
+    </>
   );
 };
 

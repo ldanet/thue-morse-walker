@@ -27,7 +27,7 @@ function Settings({
 
   const changeDelay = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setDelay(Math.max(0, parseInt(e.target.value, 10)));
+      setDelay(Math.max(0, parseInt(e.target.value, 10) ?? 0));
     },
     [setDelay]
   );
@@ -36,7 +36,7 @@ function Settings({
     <>
       <h2>Settings</h2>
       <div>
-        <label htmlFor="cycles">Cycles:</label>
+        <label htmlFor="cycles">Cycles: </label>
         <input
           type="number"
           id="cycles"
@@ -50,7 +50,7 @@ function Settings({
         ms
       </div>
       <div>
-        <label htmlFor="startingAngle">Starting angle</label>
+        <label htmlFor="startingAngle">Starting angle: </label>
         <FloatInput
           id={`startingAngle`}
           onChange={setStartingAngle}

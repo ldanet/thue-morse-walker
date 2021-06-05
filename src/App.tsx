@@ -26,6 +26,7 @@ function App() {
   const [delay, setDelay] = useState(0);
   const [cycles, setCycles] = useState(8);
   const [startingAngle, setStartingAngle] = useState(0);
+  const [hideSettings, setHideSettings] = useState(false);
 
   const handleStepChange = useCallback(
     (index, e: ChangeEvent<HTMLInputElement>) => {
@@ -81,6 +82,10 @@ function App() {
     });
   }, []);
 
+  const handleToggleSettings = useCallback(() => {
+    setHideSettings((hidden) => !hidden);
+  }, []);
+
   return (
     <main>
       <h1>Thue-Morse walker</h1>
@@ -90,43 +95,52 @@ function App() {
         delay={delay}
         startingAngle={startingAngle}
       />
-      <Settings
-        cycles={cycles}
-        delay={delay}
-        startingAngle={startingAngle}
-        setCycles={setCycles}
-        setDelay={setDelay}
-        setStartingAngle={setStartingAngle}
-      />
-      <h2>Rules</h2>
-      <table>
-        <thead>
-          <tr>
-            <th id="h-term">Term</th>
-            <th id="h-rotate">Rotate</th>
-            <th id="h-step">Step</th>
-            <th id="h-color">Color</th>
-            <td />
-          </tr>
-        </thead>
-        <tbody>
-          {rules.map((rule, index) => (
-            <Rule
-              key={index}
-              index={index}
-              ruleSet={rule}
-              onStepChange={handleStepChange}
-              onRotationChange={handleRotationChange}
-              onColorChange={handleColorChange}
-              onDeleteRule={handleDeleteRule}
-              deleteable={rules.length > 2}
-            />
-          ))}
-        </tbody>
-      </table>
-      <button title="Add rule" onClick={handleAddRule}>
-        +
+      <button className="controls-toggle" onClick={handleToggleSettings}>
+        {hideSettings ? "Show" : "Hide"} controls
       </button>
+      <div className={hideSettings ? "hide" : undefined}>
+        <p>
+          Total sequence length: {rules.length}&nbsp;^&nbsp;{cycles} ={" "}
+          {rules.length ** cycles}
+        </p>
+        <Settings
+          cycles={cycles}
+          delay={delay}
+          startingAngle={startingAngle}
+          setCycles={setCycles}
+          setDelay={setDelay}
+          setStartingAngle={setStartingAngle}
+        />
+        <h2>Rules</h2>
+        <table>
+          <thead>
+            <tr>
+              <th id="h-term">Term</th>
+              <th id="h-rotate">Rotate</th>
+              <th id="h-step">Step</th>
+              <th id="h-color">Color</th>
+              <td />
+            </tr>
+          </thead>
+          <tbody>
+            {rules.map((rule, index) => (
+              <Rule
+                key={index}
+                index={index}
+                ruleSet={rule}
+                onStepChange={handleStepChange}
+                onRotationChange={handleRotationChange}
+                onColorChange={handleColorChange}
+                onDeleteRule={handleDeleteRule}
+                deleteable={rules.length > 2}
+              />
+            ))}
+          </tbody>
+        </table>
+        <button title="Add rule" onClick={handleAddRule}>
+          +
+        </button>
+      </div>
     </main>
   );
 }
