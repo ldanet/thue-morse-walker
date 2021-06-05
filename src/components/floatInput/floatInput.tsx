@@ -1,12 +1,11 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 
 type Props = {
-  id: string;
   onChange: (value: number) => void;
   value: number;
-};
+} & Omit<JSX.IntrinsicElements["input"], "onChange">;
 
-const FloatInput = ({ id, onChange, value: propsValue }: Props) => {
+const FloatInput = ({ onChange, value: propsValue, ...inputProps }: Props) => {
   const [value, setValue] = useState<string>(propsValue.toString(10));
 
   useEffect(() => {
@@ -25,10 +24,10 @@ const FloatInput = ({ id, onChange, value: propsValue }: Props) => {
     <input
       type="number"
       step="any"
-      id={id}
       onBlur={handleBlur}
       onChange={handleChange}
       value={value}
+      {...inputProps}
     />
   );
 };

@@ -6,9 +6,10 @@ import "./colorPicker.css";
 type Props = {
   color: HslColor;
   onColorChange: (newColor: HslColor) => void;
+  term: number;
 };
 
-function ColorPicker({ color, onColorChange }: Props) {
+function ColorPicker({ color, onColorChange, term }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -27,7 +28,13 @@ function ColorPicker({ color, onColorChange }: Props) {
 
   return (
     <div className="picker">
-      <button style={colorStyle} onClick={toggleDisplay} />
+      <button
+        style={colorStyle}
+        onClick={toggleDisplay}
+        aria-label={`${
+          isOpen ? "Close" : "Open"
+        } color picker for term ${term}`}
+      />
       {isOpen && (
         <div className="picker-panel" ref={panelRef}>
           <HslColorPicker color={color} onChange={onColorChange} />

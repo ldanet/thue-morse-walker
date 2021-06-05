@@ -88,11 +88,11 @@ function App() {
       <table>
         <thead>
           <tr>
-            <th>Element</th>
-            <th>Rotate</th>
-            <th>Step</th>
-            <th>Color</th>
-            <th />
+            <th id="h-term">Term</th>
+            <th id="h-rotate">Rotate</th>
+            <th id="h-step">Step</th>
+            <th id="h-color">Color</th>
+            <td />
           </tr>
         </thead>
         <tbody>

@@ -47,29 +47,35 @@ function Rule({
   }, [index, onDeleteRule]);
   return (
     <tr>
-      <td>{index}</td>
+      <td id={`term-${index}`}>{index}</td>
       <td>
         <FloatInput
-          id={`angle${index}`}
+          id={`angle-${index}`}
           onChange={handleRotationChange}
           value={ruleSet.rotation}
+          aria-labelledby={`h-term term-${index} h-rotation`}
         />
         °
       </td>
       <td>
         <input
           type="checkbox"
-          id={`step${index}`}
+          id={`step-${index}`}
           onChange={handleStepChange}
           checked={ruleSet.step}
+          aria-labelledby={`h-term term-${index} h-step`}
         />
       </td>
       <td>
-        <ColorPicker color={ruleSet.color} onColorChange={handleColorChange} />
+        <ColorPicker
+          color={ruleSet.color}
+          onColorChange={handleColorChange}
+          term={index}
+        />
       </td>
       <td>
         <button
-          title="Delete rule"
+          title={`Delete rule for term ${index}`}
           onClick={handleDeleteRule}
           disabled={!deleteable}
         >
