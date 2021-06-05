@@ -22,7 +22,7 @@ function ColorPicker({ color, onColorChange }: Props) {
   }, []);
 
   const colorStyle = {
-    background: `hsl(${color.h},${color.s * 100}%,${color.l * 100}%)`,
+    background: `hsl(${color.h},${color.s}%,${color.l}%)`,
   };
 
   return (
