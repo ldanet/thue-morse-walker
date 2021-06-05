@@ -15,12 +15,12 @@ type Props = {
 const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [stopDrawing, setStopDrawing] = useState(false);
+  const stopDrawing = useRef(false);
 
   const step = useCallback(
     (args: DrawStepArgs) => {
       return new Promise<DrawStepArgs>((resolve, reject) => {
-        if (stopDrawing === true) {
+        if (stopDrawing.current === true) {
           reject(new Error(USER_STOP_MESSAGE));
         } else {
           setTimeout(() => {
@@ -29,7 +29,7 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
         }
       });
     },
-    [delay, stopDrawing]
+    [delay]
   );
 
   // Make sure the stepping function used in the loop is always ip to date when it's called
@@ -38,7 +38,7 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
     stepFnRef.current = step;
   }, [step]);
 
-  const draw = useCallback(() => {
+  const draw = useCallback(async () => {
     const canvas = canvasRef.current;
     if (!canvas || !canvas.getContext) {
       return Promise.reject();
@@ -65,13 +65,13 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
       color: rules[0].color,
     };
 
-    const args: DrawStepArgs = { ctx, i: 0, coords, rules };
+    let args: DrawStepArgs = { ctx, i: 0, coords, rules };
 
-    let promise = Promise.resolve(args);
     for (let i = 0; i < rules.length ** cycles; i += 1) {
-      promise = promise.then((...args) => stepFnRef.current(...args));
+      if (stopDrawing.current) break;
+      args = await stepFnRef.current(args);
     }
-    return promise;
+    return;
   }, [cycles, rules, startingAngle]);
 
   const startDrawing = useCallback(() => {
@@ -99,7 +99,7 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
 
   const handleStopDrawing = useCallback(() => {
     if (isDrawing) {
-      setStopDrawing(true);
+      stopDrawing.current = true;
     }
   }, [isDrawing]);
 
