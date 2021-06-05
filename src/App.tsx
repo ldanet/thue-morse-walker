@@ -22,11 +22,16 @@ const defaultRules = [
 
 function App() {
   const [rules, setRules] = useState<TRule[]>(defaultRules);
+  const [delay, setDelay] = useState(0);
+  const [cycles, setCycles] = useState(8);
+  const [startingAngle, setStartingAngle] = useState(0);
+
   const handleStepChange = useCallback(
     (index, e: ChangeEvent<HTMLInputElement>) => {
       setRules((oldRules) => {
         const newRules = [...oldRules];
-        newRules[index].step = e.target.checked;
+        const newRule = { ...oldRules[index], step: e.target.checked };
+        newRules[index] = newRule;
         return newRules;
       });
     },
@@ -36,7 +41,11 @@ function App() {
   const handleRotationChange = useCallback((index: number, angle: number) => {
     setRules((oldRules) => {
       const newRules = [...oldRules];
-      newRules[index].rotation = isNaN(angle) ? 0 : angle;
+      const newRule = {
+        ...oldRules[index],
+        rotation: isNaN(angle) ? 0 : angle,
+      };
+      newRules[index] = newRule;
       return newRules;
     });
   }, []);
@@ -45,7 +54,8 @@ function App() {
     setRules((oldRules) => {
       const newRules = [...oldRules];
 
-      newRules[index].color = color;
+      const newRule = { ...oldRules[index], color };
+      newRules[index] = newRule;
       return newRules;
     });
   }, []);
