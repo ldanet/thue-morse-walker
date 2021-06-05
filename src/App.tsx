@@ -4,6 +4,7 @@ import { Rule as TRule } from "./constants";
 
 import Rule from "./components/rule/rule";
 import Canvas from "./components/canvas/canvas";
+import Settings from "./components/settings/Settings";
 import "./App.css";
 import { HslColor } from "react-colorful";
 
@@ -83,7 +84,20 @@ function App() {
   return (
     <main>
       <h1>Thue-Morse walker</h1>
-      <Canvas rules={rules} />
+      <Canvas
+        rules={rules}
+        cycles={cycles}
+        delay={delay}
+        startingAngle={startingAngle}
+      />
+      <Settings
+        cycles={cycles}
+        delay={delay}
+        startingAngle={startingAngle}
+        setCycles={setCycles}
+        setDelay={setDelay}
+        setStartingAngle={setStartingAngle}
+      />
       <h2>Rules</h2>
       <table>
         <thead>

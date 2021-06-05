@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./canvas.css";
 import drawStep, { Coordinates, DrawStepArgs } from "../../utils/walker";
 import { Rule } from "../../constants";
@@ -7,22 +7,15 @@ const USER_STOP_MESSAGE = "Stopping drawing on user request";
 
 type Props = {
   rules: Rule[];
+  delay: number;
+  cycles: number;
+  startingAngle: number;
 };
 
-const Canvas = ({ rules }: Props) => {
+const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [stopDrawing, setStopDrawing] = useState(false);
-  const [delay, setDelay] = useState(0);
-  const [cycles, setCycles] = useState(8);
-
-  const changeCycles = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setCycles(parseInt(e.target.value, 10));
-  }, []);
-
-  const changeDelay = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setDelay(Math.max(0, parseInt(e.target.value, 10)));
-  }, []);
 
   const step = useCallback(
     (args: DrawStepArgs) => {
@@ -67,7 +60,7 @@ const Canvas = ({ rules }: Props) => {
     const coords: Coordinates = {
       x: width / 2,
       y: height / 2,
-      angle: 0,
+      angle: startingAngle,
       length: 64,
       color: rules[0].color,
     };
@@ -79,7 +72,7 @@ const Canvas = ({ rules }: Props) => {
       promise = promise.then((...args) => stepFnRef.current(...args));
     }
     return promise;
-  }, [cycles, rules]);
+  }, [cycles, rules, startingAngle]);
 
   const startDrawing = useCallback(() => {
     if (!canvasRef.current || isDrawing === true) {
@@ -114,29 +107,12 @@ const Canvas = ({ rules }: Props) => {
     <div>
       <canvas className="canvas" ref={canvasRef} width="500" height="500" />
       <div>
-        <div>
-          <label htmlFor="cycles">
-            Number of elements: {rules.length}&nbsp;^&nbsp;
-          </label>
-          <input
-            type="number"
-            id="cycles"
-            value={cycles}
-            onChange={changeCycles}
-          />{" "}
-          = {rules.length ** cycles}
-        </div>
-        <div>
-          <label htmlFor="delay">Delay: </label>
-          <input
-            type="number"
-            id="delay"
-            value={delay}
-            onChange={changeDelay}
-          />
-          ms
-        </div>
-        <button onClick={isDrawing ? handleStopDrawing : startDrawing}>
+        Total sequence length: {rules.length}&nbsp;^&nbsp;{cycles} ={" "}
+        {rules.length ** cycles}
+        <button
+          className="draw-button"
+          onClick={isDrawing ? handleStopDrawing : startDrawing}
+        >
           {isDrawing ? "Stop" : "Draw"}
         </button>
       </div>
