@@ -1,35 +1,39 @@
 import { useEffect } from "react";
-import qs from "qs";
+import jsurl from "jsurl";
 import { DeepPartial, ParamsObject, Rule, State } from "../constants";
 import { HslColor } from "react-colorful";
 
-function isNumber(val: string): boolean {
-  return !isNaN(parseFloat(val)) && isFinite(parseFloat(val));
-}
-
-function isBoolean(val: string): boolean {
-  return val === "false" || val === "true";
-}
-
-function getInt(val: unknown): number | undefined {
-  if (typeof val === "string" && isNumber(val)) {
-    return parseInt(val, 10);
+function getNumber<T extends string>(obj: unknown, key: T): number | undefined {
+  if (hasProperty(obj, key)) {
+    const val = obj[key];
+    if (typeof val === "number") {
+      return val;
+    }
   }
   return undefined;
 }
 
-function getFloat(val: unknown): number | undefined {
-  if (typeof val === "string" && isNumber(val)) {
-    return parseFloat(val);
+function getBoolean<T extends string>(
+  obj: unknown,
+  key: T
+): boolean | undefined {
+  if (hasProperty(obj, key)) {
+    const val = obj[key];
+    if (typeof val === "boolean") {
+      return val;
+    }
   }
   return undefined;
 }
 
-function getBoolean(val: unknown): boolean | undefined {
-  if (typeof val === "string" && isBoolean(val)) {
-    return val === "true";
+function hasProperty<T extends string>(
+  value: unknown,
+  key: T
+): value is { [key in T]: unknown } {
+  if ((value as { [key in T]: unknown })[key] !== undefined) {
+    return true;
   }
-  return undefined;
+  return false;
 }
 
 export const getUrl = (
@@ -46,32 +50,36 @@ export const getUrl = (
     a: startingAngle,
     b: bgColor,
   };
-  const paramString = qs.stringify(paramsObj);
+
+  const paramString = jsurl.stringify(paramsObj);
   const url = new URL(window.location.href);
   url.search = paramString;
   return url;
 };
 
-export const getValuesFromUrl = (): DeepPartial<State> => {
-  const params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+export const getValuesFromUrl = (): DeepPartial<State> | null => {
+  const params: unknown = jsurl.tryParse(
+    window.location.search.replace(/^\?/, "")
+  );
   const result: DeepPartial<State> = {};
+  if (!params || typeof params !== "object") return null;
 
-  if (Array.isArray(params.r)) {
+  if (hasProperty(params, "r") && Array.isArray(params.r)) {
     const rules: DeepPartial<Rule>[] = [];
 
-    params.r.forEach((val, index) => {
+    params.r.forEach((val: unknown, index) => {
       if (typeof val === "object") {
         const rule: DeepPartial<Rule> = {};
-        rule.step = getBoolean(val.s);
-        rule.rotation = getFloat(val.r);
+        rule.step = getBoolean(val, "s");
+        rule.rotation = getNumber(val, "r");
 
-        const paramColor = val.c;
+        const paramColor = hasProperty(val, "c") ? val.c : undefined;
 
         if (typeof paramColor === "object" && !Array.isArray(paramColor)) {
           rule.color = {
-            h: getInt(paramColor.h),
-            s: getInt(paramColor.s),
-            l: getInt(paramColor.l),
+            h: getNumber(paramColor, "h"),
+            s: getNumber(paramColor, "s"),
+            l: getNumber(paramColor, "l"),
           };
         }
         rules[index] = rule;
@@ -80,14 +88,18 @@ export const getValuesFromUrl = (): DeepPartial<State> => {
 
     result.rules = rules;
   }
-  result.cycles = getInt(params.c);
-  result.delay = getInt(params.d);
-  result.startingAngle = getFloat(params.a);
-  if (typeof params.b === "object" && !Array.isArray(params.b)) {
+  result.cycles = getNumber(params, "c");
+  result.delay = getNumber(params, "d");
+  result.startingAngle = getNumber(params, "a");
+  if (
+    hasProperty(params, "b") &&
+    typeof params.b === "object" &&
+    !Array.isArray(params.b)
+  ) {
     result.bgColor = {
-      h: getInt(params.b.h),
-      s: getInt(params.b.s),
-      l: getInt(params.b.l),
+      h: getNumber(params.b, "h"),
+      s: getNumber(params.b, "s"),
+      l: getNumber(params.b, "l"),
     };
   }
   return result;
@@ -99,7 +111,7 @@ export const useQueryParams = (
   delay: number,
   startingAngle: number,
   bgColor: HslColor,
-  setState: (params: DeepPartial<State>) => void
+  setState: (params: DeepPartial<State> | null) => void
 ) => {
   useEffect(() => {
     setState(getValuesFromUrl());

@@ -88,40 +88,44 @@ function App() {
     setHideSettings((hidden) => !hidden);
   }, []);
 
-  const setStateFromParams = useCallback((params: DeepPartial<State>) => {
-    if (params.rules !== undefined) {
-      setRules((rules) => {
-        const newRules = [...rules];
-        params.rules?.forEach((newRule, term) => {
-          const oldRule = rules[term] ?? rules[rules.length - 1];
-          newRules[term] = {
-            ...oldRule,
-            ...newRule,
-            color: {
-              ...oldRule.color,
-              ...(newRule.color ?? {
-                h: oldRule.color.h + 222.5 * term - (rules.length - 1),
-              }),
-            },
-          };
+  const setStateFromParams = useCallback(
+    (params: DeepPartial<State> | null) => {
+      if (!params) return;
+      if (params.rules !== undefined) {
+        setRules((rules) => {
+          const newRules = [...rules];
+          params.rules?.forEach((newRule, term) => {
+            const oldRule = rules[term] ?? rules[rules.length - 1];
+            newRules[term] = {
+              ...oldRule,
+              ...newRule,
+              color: {
+                ...oldRule.color,
+                ...(newRule.color ?? {
+                  h: oldRule.color.h + 222.5 * term - (rules.length - 1),
+                }),
+              },
+            };
+          });
+          // Make sure rule array is not sparse
+          return newRules.filter(Boolean);
         });
-        // Make sure rule array is not sparse
-        return newRules.filter(Boolean);
-      });
-    }
-    if (params.cycles !== undefined) {
-      setCycles(params.cycles);
-    }
-    if (params.delay !== undefined) {
-      setDelay(params.delay);
-    }
-    if (params.startingAngle !== undefined) {
-      setStartingAngle(params.startingAngle);
-    }
-    if (params.bgColor !== undefined) {
-      setBgColor((oldColor) => ({ ...oldColor, ...params.bgColor }));
-    }
-  }, []);
+      }
+      if (params.cycles !== undefined) {
+        setCycles(params.cycles);
+      }
+      if (params.delay !== undefined) {
+        setDelay(params.delay);
+      }
+      if (params.startingAngle !== undefined) {
+        setStartingAngle(params.startingAngle);
+      }
+      if (params.bgColor !== undefined) {
+        setBgColor((oldColor) => ({ ...oldColor, ...params.bgColor }));
+      }
+    },
+    []
+  );
 
   useQueryParams(
     rules,
