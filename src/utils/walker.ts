@@ -147,6 +147,7 @@ function drawSegment(
   { x: oldX, y: oldY }: Coordinates,
   { x: newX, y: newY, color }: Coordinates
 ) {
+  if (oldX === newX && oldY === newY) return;
   ctx.beginPath();
   ctx.strokeStyle = `hsl(${color.h},${color.s}%,${color.l}%)`;
   ctx.moveTo(oldX, oldY);
