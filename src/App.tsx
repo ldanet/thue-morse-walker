@@ -1,12 +1,13 @@
 import { ChangeEvent, useCallback, useState } from "react";
 
-import { Rule as TRule } from "./constants";
+import { DeepPartial, ParamsObject, Rule as TRule } from "./constants";
 
 import Rule from "./components/rule/rule";
 import Canvas from "./components/canvas/canvas";
 import Settings from "./components/settings/Settings";
 import "./App.css";
 import { HslColor } from "react-colorful";
+import { useQueryParams } from "./utils/queryParams";
 
 const defaultRules = [
   {
@@ -85,6 +86,44 @@ function App() {
   const handleToggleSettings = useCallback(() => {
     setHideSettings((hidden) => !hidden);
   }, []);
+
+  const setStateFromParams = useCallback(
+    (params: DeepPartial<ParamsObject>) => {
+      console.log("params: ", params);
+      if (params.rules !== undefined) {
+        setRules((rules) => {
+          const newRules = [...rules];
+          params.rules?.forEach((newRule, term) => {
+            const oldRule = rules[term] ?? rules[rules.length - 1];
+            newRules[term] = {
+              ...oldRule,
+              ...newRule,
+              color: {
+                ...oldRule.color,
+                ...(newRule.color ?? {
+                  h: oldRule.color.h + 222.5 * term - (rules.length - 1),
+                }),
+              },
+            };
+          });
+          // Make sure rule array is not sparse
+          return newRules.filter(Boolean);
+        });
+      }
+      if (params.cycles !== undefined) {
+        setCycles(params.cycles);
+      }
+      if (params.delay !== undefined) {
+        setDelay(params.delay);
+      }
+      if (params.startAng !== undefined) {
+        setStartingAngle(params.startAng);
+      }
+    },
+    []
+  );
+
+  useQueryParams(rules, cycles, delay, startingAngle, setStateFromParams);
 
   return (
     <main>
