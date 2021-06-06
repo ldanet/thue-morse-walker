@@ -4,12 +4,20 @@ import useClickOutside from "../../utils/useClickOutside";
 import "./colorPicker.css";
 
 type Props = {
+  className?: string;
   color: HslColor;
   onColorChange: (newColor: HslColor) => void;
-  term: number;
+  label?: string;
+  position?: "left" | "right";
 };
 
-function ColorPicker({ color, onColorChange, term }: Props) {
+function ColorPicker({
+  className,
+  color,
+  onColorChange,
+  label,
+  position = "left",
+}: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -27,16 +35,17 @@ function ColorPicker({ color, onColorChange, term }: Props) {
   };
 
   return (
-    <div className="picker">
+    <div className={`picker ${className ?? ""}`}>
       <button
         style={colorStyle}
         onClick={toggleDisplay}
-        aria-label={`${
-          isOpen ? "Close" : "Open"
-        } color picker for term ${term}`}
+        aria-label={`${isOpen ? "Close" : "Open"} color picker for ${label}`}
       />
       {isOpen && (
-        <div className="picker-panel" ref={panelRef}>
+        <div
+          className={`picker-panel picker-panel--${position}`}
+          ref={panelRef}
+        >
           <HslColorPicker color={color} onChange={onColorChange} />
         </div>
       )}

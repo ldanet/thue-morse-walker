@@ -26,6 +26,7 @@ function App() {
   const [rules, setRules] = useState<TRule[]>(defaultRules);
   const [delay, setDelay] = useState(0);
   const [cycles, setCycles] = useState(8);
+  const [bgColor, setBgColor] = useState<HslColor>({ h: 0, s: 0, l: 100 });
   const [startingAngle, setStartingAngle] = useState(0);
   const [hideSettings, setHideSettings] = useState(false);
 
@@ -119,11 +120,21 @@ function App() {
       if (params.startAng !== undefined) {
         setStartingAngle(params.startAng);
       }
+      if (params.bgColor !== undefined) {
+        setBgColor((oldColor) => ({ ...oldColor, ...params.bgColor }));
+      }
     },
     []
   );
 
-  useQueryParams(rules, cycles, delay, startingAngle, setStateFromParams);
+  useQueryParams(
+    rules,
+    cycles,
+    delay,
+    startingAngle,
+    bgColor,
+    setStateFromParams
+  );
 
   return (
     <main>
@@ -133,6 +144,7 @@ function App() {
         cycles={cycles}
         delay={delay}
         startingAngle={startingAngle}
+        bgColor={bgColor}
       />
       <button className="controls-toggle" onClick={handleToggleSettings}>
         {hideSettings ? "Show" : "Hide"} controls
@@ -149,6 +161,8 @@ function App() {
           setCycles={setCycles}
           setDelay={setDelay}
           setStartingAngle={setStartingAngle}
+          bgColor={bgColor}
+          setBgColor={setBgColor}
         />
         <h2>Rules</h2>
         <table>

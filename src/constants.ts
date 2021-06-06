@@ -11,6 +11,7 @@ export type ParamsObject = {
   cycles: number;
   delay: number;
   startAng: number;
+  bgColor: HslColor;
 };
 
 export type DeepPartial<T> = {

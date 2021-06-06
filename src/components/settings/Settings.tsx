@@ -1,5 +1,9 @@
 import { ChangeEvent, useCallback } from "react";
 import FloatInput from "../floatInput/floatInput";
+import ColorPicker from "../colorPicker/colorPicker";
+import { HslColor } from "react-colorful";
+
+import "./settings.css";
 
 type Props = {
   cycles: number;
@@ -8,15 +12,19 @@ type Props = {
   setDelay: (delay: number) => void;
   startingAngle: number;
   setStartingAngle: (angle: number) => void;
+  bgColor: HslColor;
+  setBgColor: (color: HslColor) => void;
 };
 
 function Settings({
   cycles,
   delay,
   startingAngle,
+  bgColor,
   setCycles,
   setDelay,
   setStartingAngle,
+  setBgColor,
 }: Props) {
   const changeCycles = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +65,16 @@ function Settings({
           value={startingAngle}
         />
         °
+      </div>
+      <div>
+        <label htmlFor="bgColor">Background color: </label>
+        <ColorPicker
+          className="settings_bg-picker"
+          color={bgColor}
+          onColorChange={setBgColor}
+          label="background color"
+          position="right"
+        />
       </div>
     </>
   );

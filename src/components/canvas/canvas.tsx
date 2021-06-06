@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import "./canvas.css";
 import drawStep, { Coordinates, DrawStepArgs } from "../../utils/walker";
 import { Rule } from "../../constants";
+import { HslColor } from "react-colorful";
 
 const USER_STOP_MESSAGE = "Stopping drawing on user request";
 
@@ -10,9 +11,10 @@ type Props = {
   delay: number;
   cycles: number;
   startingAngle: number;
+  bgColor: HslColor;
 };
 
-const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
+const Canvas = ({ rules, delay, cycles, startingAngle, bgColor }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasWidth = useRef<number>(window.innerWidth * devicePixelRatio);
   const canvasHeight = useRef<number>(window.innerHeight * devicePixelRatio);
@@ -114,7 +116,11 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
   return (
     <>
       <canvas
-        style={{ width: window.innerWidth, height: window.innerHeight }}
+        style={{
+          width: window.innerWidth,
+          height: window.innerHeight,
+          backgroundColor: `hsl(${bgColor.h},${bgColor.s}%,${bgColor.l}%)`,
+        }}
         className="canvas"
         ref={canvasRef}
         width={canvasWidth.current}

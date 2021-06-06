@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import qs from "qs";
 import { DeepPartial, ParamsObject, Rule } from "../constants";
+import { HslColor } from "react-colorful";
 
 function isNumber(val: string): boolean {
   return !isNaN(parseFloat(val)) && isFinite(parseFloat(val));
@@ -35,13 +36,15 @@ export const getUrl = (
   rules: Rule[],
   cycles: number,
   delay: number,
-  startingAngle: number
+  startingAngle: number,
+  bgColor: HslColor
 ) => {
   const paramsObj = {
     rules,
     cycles,
     delay,
     startAng: startingAngle,
+    bgColor,
   };
   const paramString = qs.stringify(paramsObj);
   const url = new URL(window.location.href);
@@ -51,7 +54,7 @@ export const getUrl = (
 
 export const getValuesFromUrl = (): DeepPartial<ParamsObject> => {
   const params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-  const values: DeepPartial<ParamsObject> = {};
+  const result: DeepPartial<ParamsObject> = {};
 
   if (Array.isArray(params.rules)) {
     const rules: DeepPartial<Rule>[] = [];
@@ -75,12 +78,19 @@ export const getValuesFromUrl = (): DeepPartial<ParamsObject> => {
       }
     });
 
-    values.rules = rules;
+    result.rules = rules;
   }
-  values.cycles = getInt(params.cycles);
-  values.delay = getInt(params.delay);
-  values.startAng = getFloat(params.startAng);
-  return values;
+  result.cycles = getInt(params.cycles);
+  result.delay = getInt(params.delay);
+  result.startAng = getFloat(params.startAng);
+  if (typeof params.bgColor === "object" && !Array.isArray(params.bgColor)) {
+    result.bgColor = {
+      h: getInt(params.bgColor.h),
+      s: getInt(params.bgColor.s),
+      l: getInt(params.bgColor.l),
+    };
+  }
+  return result;
 };
 
 export const useQueryParams = (
@@ -88,6 +98,7 @@ export const useQueryParams = (
   cycles: number,
   delay: number,
   startingAngle: number,
+  bgColor: HslColor,
   setState: (params: DeepPartial<ParamsObject>) => void
 ) => {
   useEffect(() => {
@@ -97,7 +108,7 @@ export const useQueryParams = (
   }, []);
 
   useEffect(() => {
-    const url = getUrl(rules, cycles, delay, startingAngle);
+    const url = getUrl(rules, cycles, delay, startingAngle, bgColor);
     window.history.replaceState(null, "", url.toString());
-  }, [rules, cycles, delay, startingAngle]);
+  }, [rules, cycles, delay, startingAngle, bgColor]);
 };

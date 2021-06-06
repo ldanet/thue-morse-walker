@@ -70,7 +70,7 @@ function Rule({
         <ColorPicker
           color={ruleSet.color}
           onColorChange={handleColorChange}
-          term={index}
+          label={`term ${index}`}
         />
       </td>
       <td>
