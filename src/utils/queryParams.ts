@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import qs from "qs";
-import { DeepPartial, ParamsObject, Rule } from "../constants";
+import { DeepPartial, ParamsObject, Rule, State } from "../constants";
 import { HslColor } from "react-colorful";
 
 function isNumber(val: string): boolean {
@@ -39,12 +39,12 @@ export const getUrl = (
   startingAngle: number,
   bgColor: HslColor
 ) => {
-  const paramsObj = {
-    rules,
-    cycles,
-    delay,
-    startAng: startingAngle,
-    bgColor,
+  const paramsObj: ParamsObject = {
+    r: rules.map((rule) => ({ s: rule.step, r: rule.rotation, c: rule.color })),
+    c: cycles,
+    d: delay,
+    a: startingAngle,
+    b: bgColor,
   };
   const paramString = qs.stringify(paramsObj);
   const url = new URL(window.location.href);
@@ -52,20 +52,20 @@ export const getUrl = (
   return url;
 };
 
-export const getValuesFromUrl = (): DeepPartial<ParamsObject> => {
+export const getValuesFromUrl = (): DeepPartial<State> => {
   const params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-  const result: DeepPartial<ParamsObject> = {};
+  const result: DeepPartial<State> = {};
 
-  if (Array.isArray(params.rules)) {
+  if (Array.isArray(params.r)) {
     const rules: DeepPartial<Rule>[] = [];
 
-    params.rules.forEach((val, index) => {
+    params.r.forEach((val, index) => {
       if (typeof val === "object") {
         const rule: DeepPartial<Rule> = {};
-        rule.step = getBoolean(val.step);
-        rule.rotation = getFloat(val.rotation);
+        rule.step = getBoolean(val.s);
+        rule.rotation = getFloat(val.r);
 
-        const paramColor = val.color;
+        const paramColor = val.c;
 
         if (typeof paramColor === "object" && !Array.isArray(paramColor)) {
           rule.color = {
@@ -80,14 +80,14 @@ export const getValuesFromUrl = (): DeepPartial<ParamsObject> => {
 
     result.rules = rules;
   }
-  result.cycles = getInt(params.cycles);
-  result.delay = getInt(params.delay);
-  result.startAng = getFloat(params.startAng);
-  if (typeof params.bgColor === "object" && !Array.isArray(params.bgColor)) {
+  result.cycles = getInt(params.c);
+  result.delay = getInt(params.d);
+  result.startingAngle = getFloat(params.a);
+  if (typeof params.b === "object" && !Array.isArray(params.b)) {
     result.bgColor = {
-      h: getInt(params.bgColor.h),
-      s: getInt(params.bgColor.s),
-      l: getInt(params.bgColor.l),
+      h: getInt(params.b.h),
+      s: getInt(params.b.s),
+      l: getInt(params.b.l),
     };
   }
   return result;
@@ -99,7 +99,7 @@ export const useQueryParams = (
   delay: number,
   startingAngle: number,
   bgColor: HslColor,
-  setState: (params: DeepPartial<ParamsObject>) => void
+  setState: (params: DeepPartial<State>) => void
 ) => {
   useEffect(() => {
     setState(getValuesFromUrl());

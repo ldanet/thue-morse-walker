@@ -1,6 +1,6 @@
 import { ChangeEvent, useCallback, useState } from "react";
 
-import { DeepPartial, ParamsObject, Rule as TRule } from "./constants";
+import { DeepPartial, Rule as TRule, State } from "./constants";
 
 import Rule from "./components/rule/rule";
 import Canvas from "./components/canvas/canvas";
@@ -88,44 +88,40 @@ function App() {
     setHideSettings((hidden) => !hidden);
   }, []);
 
-  const setStateFromParams = useCallback(
-    (params: DeepPartial<ParamsObject>) => {
-      console.log("params: ", params);
-      if (params.rules !== undefined) {
-        setRules((rules) => {
-          const newRules = [...rules];
-          params.rules?.forEach((newRule, term) => {
-            const oldRule = rules[term] ?? rules[rules.length - 1];
-            newRules[term] = {
-              ...oldRule,
-              ...newRule,
-              color: {
-                ...oldRule.color,
-                ...(newRule.color ?? {
-                  h: oldRule.color.h + 222.5 * term - (rules.length - 1),
-                }),
-              },
-            };
-          });
-          // Make sure rule array is not sparse
-          return newRules.filter(Boolean);
+  const setStateFromParams = useCallback((params: DeepPartial<State>) => {
+    if (params.rules !== undefined) {
+      setRules((rules) => {
+        const newRules = [...rules];
+        params.rules?.forEach((newRule, term) => {
+          const oldRule = rules[term] ?? rules[rules.length - 1];
+          newRules[term] = {
+            ...oldRule,
+            ...newRule,
+            color: {
+              ...oldRule.color,
+              ...(newRule.color ?? {
+                h: oldRule.color.h + 222.5 * term - (rules.length - 1),
+              }),
+            },
+          };
         });
-      }
-      if (params.cycles !== undefined) {
-        setCycles(params.cycles);
-      }
-      if (params.delay !== undefined) {
-        setDelay(params.delay);
-      }
-      if (params.startAng !== undefined) {
-        setStartingAngle(params.startAng);
-      }
-      if (params.bgColor !== undefined) {
-        setBgColor((oldColor) => ({ ...oldColor, ...params.bgColor }));
-      }
-    },
-    []
-  );
+        // Make sure rule array is not sparse
+        return newRules.filter(Boolean);
+      });
+    }
+    if (params.cycles !== undefined) {
+      setCycles(params.cycles);
+    }
+    if (params.delay !== undefined) {
+      setDelay(params.delay);
+    }
+    if (params.startingAngle !== undefined) {
+      setStartingAngle(params.startingAngle);
+    }
+    if (params.bgColor !== undefined) {
+      setBgColor((oldColor) => ({ ...oldColor, ...params.bgColor }));
+    }
+  }, []);
 
   useQueryParams(
     rules,

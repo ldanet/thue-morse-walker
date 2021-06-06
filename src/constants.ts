@@ -6,11 +6,25 @@ export type Rule = {
   color: HslColor;
 };
 
+export type ParamRule = {
+  s: boolean; // step
+  r: number; // rotation
+  c: HslColor; // color
+};
+
 export type ParamsObject = {
+  r: ParamRule[]; // rules
+  c: number; // cycles
+  d: number; // delay
+  a: number; // starting angle
+  b: HslColor; // bg color
+};
+
+export type State = {
   rules: Rule[];
   cycles: number;
   delay: number;
-  startAng: number;
+  startingAngle: number;
   bgColor: HslColor;
 };
 
