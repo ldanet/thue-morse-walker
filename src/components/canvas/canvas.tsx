@@ -14,8 +14,8 @@ type Props = {
 
 const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const canvasWidth = useRef<number>(window.innerWidth);
-  const canvasHeight = useRef<number>(window.innerHeight);
+  const canvasWidth = useRef<number>(window.innerWidth * devicePixelRatio);
+  const canvasHeight = useRef<number>(window.innerHeight * devicePixelRatio);
   const [isDrawing, setIsDrawing] = useState(false);
   const stopDrawing = useRef(false);
 
@@ -34,7 +34,7 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
     [delay]
   );
 
-  // Make sure the stepping function used in the loop is always ip to date when it's called
+  // Make sure the stepping function used in the loop is always up to date when it's called
   const stepFnRef = useRef(step);
   useEffect(() => {
     stepFnRef.current = step;
@@ -83,8 +83,8 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
       console.warn("Canvas is not supported");
     } else {
       setIsDrawing(true);
-      canvasWidth.current = window.innerWidth;
-      canvasHeight.current = window.innerHeight;
+      canvasWidth.current = window.innerWidth * devicePixelRatio;
+      canvasHeight.current = window.innerHeight * devicePixelRatio;
       setTimeout(
         () =>
           draw()
@@ -114,6 +114,7 @@ const Canvas = ({ rules, delay, cycles, startingAngle }: Props) => {
   return (
     <>
       <canvas
+        style={{ width: window.innerWidth, height: window.innerHeight }}
         className="canvas"
         ref={canvasRef}
         width={canvasWidth.current}
