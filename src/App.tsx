@@ -189,6 +189,11 @@ function App() {
         <button title="Add rule" onClick={handleAddRule}>
           +
         </button>
+        <footer>
+          <a href="https://github.com/ldanet/thue-morse-walker">
+            About / Source code
+          </a>
+        </footer>
       </div>
     </main>
   );

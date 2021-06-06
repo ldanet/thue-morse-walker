@@ -25,3 +25,8 @@ input {
 .hide {
   display: none;
 }
+
+footer {
+  margin-top: 1em;
+  text-align: center;
+}
