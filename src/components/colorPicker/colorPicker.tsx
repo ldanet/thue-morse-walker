@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import { HslColor, HslColorPicker } from "react-colorful";
+import { getCSSColor } from "../../utils/color";
 import useClickOutside from "../../utils/useClickOutside";
 import "./colorPicker.css";
 
@@ -31,7 +32,7 @@ function ColorPicker({
   }, []);
 
   const colorStyle = {
-    background: `hsl(${color.h},${color.s}%,${color.l}%)`,
+    background: getCSSColor(color),
   };
 
   return (

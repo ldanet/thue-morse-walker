@@ -3,6 +3,7 @@ import "./canvas.css";
 import drawStep, { Coordinates, DrawStepArgs } from "../../utils/walker";
 import { Rule } from "../../constants";
 import { HslColor } from "react-colorful";
+import { getCSSColor } from "../../utils/color";
 
 const USER_STOP_MESSAGE = "Stopping drawing on user request";
 
@@ -119,7 +120,7 @@ const Canvas = ({ rules, delay, cycles, startingAngle, bgColor }: Props) => {
         style={{
           width: window.innerWidth,
           height: window.innerHeight,
-          backgroundColor: `hsl(${bgColor.h},${bgColor.s}%,${bgColor.l}%)`,
+          backgroundColor: getCSSColor(bgColor),
         }}
         className="canvas"
         ref={canvasRef}
