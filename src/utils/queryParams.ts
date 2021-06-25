@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import jsurl from "@yaska-eu/jsurl2";
 import { DeepPartial, ParamsObject, Rule, State } from "../constants";
 import { HslColor } from "react-colorful";
@@ -106,11 +106,6 @@ export const getValuesFromUrl = (): DeepPartial<State> | null => {
 };
 
 export const useQueryParams = (
-  rules: Rule[],
-  cycles: number,
-  delay: number,
-  startingAngle: number,
-  bgColor: HslColor,
   setState: (params: DeepPartial<State> | null) => void
 ) => {
   useEffect(() => {
@@ -119,8 +114,18 @@ export const useQueryParams = (
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    const url = getUrl(rules, cycles, delay, startingAngle, bgColor);
-    window.history.replaceState(null, "", url.toString());
-  }, [rules, cycles, delay, startingAngle, bgColor]);
+  const setUrlParams = useCallback(
+    (
+      rules: Rule[],
+      cycles: number,
+      delay: number,
+      startingAngle: number,
+      bgColor: HslColor
+    ) => {
+      const url = getUrl(rules, cycles, delay, startingAngle, bgColor);
+      window.history.replaceState(null, "", url.toString());
+    },
+    []
+  );
+  return { setUrlParams };
 };

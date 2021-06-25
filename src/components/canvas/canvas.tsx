@@ -13,9 +13,17 @@ type Props = {
   cycles: number;
   startingAngle: number;
   bgColor: HslColor;
+  onDraw: () => void;
 };
 
-const Canvas = ({ rules, delay, cycles, startingAngle, bgColor }: Props) => {
+const Canvas = ({
+  rules,
+  delay,
+  cycles,
+  startingAngle,
+  bgColor,
+  onDraw,
+}: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasWidth = useRef<number>(window.innerWidth * devicePixelRatio);
   const canvasHeight = useRef<number>(window.innerHeight * devicePixelRatio);
@@ -86,6 +94,7 @@ const Canvas = ({ rules, delay, cycles, startingAngle, bgColor }: Props) => {
       console.warn("Canvas is not supported");
     } else {
       setIsDrawing(true);
+      onDraw();
       canvasWidth.current = window.innerWidth * devicePixelRatio;
       canvasHeight.current = window.innerHeight * devicePixelRatio;
       setTimeout(
@@ -106,7 +115,7 @@ const Canvas = ({ rules, delay, cycles, startingAngle, bgColor }: Props) => {
         0
       );
     }
-  }, [isDrawing, draw]);
+  }, [isDrawing, draw, onDraw]);
 
   const handleStopDrawing = useCallback(() => {
     if (isDrawing) {

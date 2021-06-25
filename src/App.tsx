@@ -127,14 +127,11 @@ function App() {
     []
   );
 
-  useQueryParams(
-    rules,
-    cycles,
-    delay,
-    startingAngle,
-    bgColor,
-    setStateFromParams
-  );
+  const { setUrlParams } = useQueryParams(setStateFromParams);
+
+  const handleDraw = useCallback(() => {
+    setUrlParams(rules, cycles, delay, startingAngle, bgColor);
+  }, [rules, cycles, delay, startingAngle, bgColor, setUrlParams]);
 
   return (
     <main>
@@ -145,6 +142,7 @@ function App() {
         delay={delay}
         startingAngle={startingAngle}
         bgColor={bgColor}
+        onDraw={handleDraw}
       />
       <button className="controls-toggle" onClick={handleToggleSettings}>
         {hideSettings ? "Show" : "Hide"} controls
