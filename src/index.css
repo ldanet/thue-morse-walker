@@ -13,8 +13,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+html,
 body,
 #root {
-  display: inline-block;
+  height: 100%;
 }

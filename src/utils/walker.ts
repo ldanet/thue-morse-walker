@@ -14,7 +14,8 @@ function convertToBase(base: number, num: number) {
 function sumDigits(digitArray: number[]) {
   return digitArray.reduce((sum, digit) => sum + digit, 0);
 }
-function getSequenceElement(base: number, num: number) {
+
+export function getSequenceTerm(base: number, num: number) {
   const digits = convertToBase(base, num);
   const digitSum = sumDigits(digits);
   return digitSum % base;
@@ -26,8 +27,8 @@ function calculateNextStep(
   rules: Rule[]
 ) {
   const base = rules.length;
-  const sequenceElement = getSequenceElement(base, i);
-  const { step, rotation, color } = rules[sequenceElement];
+  const sequenceTerm = getSequenceTerm(base, i);
+  const { step, rotation, color } = rules[sequenceTerm];
   const newAngle = (angle + rotation) % 360;
   let newX;
   let newY;

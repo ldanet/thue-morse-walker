@@ -5,9 +5,11 @@ import { DeepPartial, Rule as TRule, State } from "./constants";
 import Rule from "./components/rule/rule";
 import Canvas from "./components/canvas/canvas";
 import Settings from "./components/settings/Settings";
-import "./App.css";
+import SequenceSample from "./components/sequenceSample/sequenceSample";
 import { HslColor } from "react-colorful";
 import { useQueryParams } from "./utils/queryParams";
+
+import "./App.css";
 
 const defaultRules = [
   {
@@ -148,10 +150,6 @@ function App() {
         {hideSettings ? "Show" : "Hide"} controls
       </button>
       <div className={hideSettings ? "hide" : undefined}>
-        <p>
-          Total sequence length: {rules.length}&nbsp;^&nbsp;{cycles} ={" "}
-          {rules.length ** cycles}
-        </p>
         <Settings
           cycles={cycles}
           delay={delay}
@@ -191,6 +189,12 @@ function App() {
         <button title="Add rule" onClick={handleAddRule}>
           +
         </button>
+        <h2>Current sequence</h2>
+        <p>
+          Total sequence length: {rules.length}&nbsp;^&nbsp;{cycles} ={" "}
+          {rules.length ** cycles}
+        </p>
+        <SequenceSample bgColor={bgColor} rules={rules} />
         <footer>
           <a href="https://github.com/ldanet/thue-morse-walker">
             About / Source code

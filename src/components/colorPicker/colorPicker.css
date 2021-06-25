@@ -8,7 +8,6 @@
 }
 .picker-panel {
   position: absolute;
-  bottom: 100%;
   z-index: 1;
 }
 .picker-panel--left {
@@ -16,4 +15,14 @@
 }
 .picker-panel--right {
   left: 0;
+}
+.picker-panel--center {
+  left: calc(-100px + 50%);
+}
+
+.picker-panel--bottom {
+  top: 100%;
+}
+.picker-panel--top {
+  bottom: 100%;
 }

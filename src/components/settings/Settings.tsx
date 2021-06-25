@@ -73,7 +73,7 @@ function Settings({
           color={bgColor}
           onColorChange={setBgColor}
           label="background color"
-          position="right"
+          positionX="center"
         />
       </div>
     </>

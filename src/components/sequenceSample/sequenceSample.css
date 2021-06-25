@@ -1,0 +1,10 @@
+.sequence-sample {
+  font-family: monospace;
+  margin: 0.5em auto;
+}
+
+.sequence-sample_term {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+}

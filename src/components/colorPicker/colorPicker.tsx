@@ -9,7 +9,8 @@ type Props = {
   color: HslColor;
   onColorChange: (newColor: HslColor) => void;
   label?: string;
-  position?: "left" | "right";
+  positionX?: "left" | "right" | "center";
+  positionY?: "top" | "bottom";
 };
 
 function ColorPicker({
@@ -17,7 +18,8 @@ function ColorPicker({
   color,
   onColorChange,
   label,
-  position = "left",
+  positionX = "left",
+  positionY = "bottom",
 }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -44,7 +46,7 @@ function ColorPicker({
       />
       {isOpen && (
         <div
-          className={`picker-panel picker-panel--${position}`}
+          className={`picker-panel picker-panel--${positionX} picker-panel--${positionY}`}
           ref={panelRef}
         >
           <HslColorPicker color={color} onChange={onColorChange} />
