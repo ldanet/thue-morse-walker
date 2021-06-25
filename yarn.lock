@@ -2143,6 +2143,11 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
+"@yaska-eu/jsurl2@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@yaska-eu/jsurl2/-/jsurl2-2.1.0.tgz#6313c9f7b34c240676cfcf8b644e1c2750ea4a6c"
+  integrity sha512-+KTF0OYLPt8E1lJD9yz2ErpjJuxfFZRrCyhR1xUNyNISg96iK9EbHP0Iz3D515SI9WZ85YuljjjRyhmOae+/XQ==
+
 abab@^2.0.3:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.5.tgz#c0b678fb32d60fc1219c784d6a826fe385aeb79a"
@@ -6751,11 +6756,6 @@ jsprim@^1.2.2:
     extsprintf "1.3.0"
     json-schema "0.2.3"
     verror "1.10.0"
-
-jsurl@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/jsurl/-/jsurl-0.1.5.tgz#2a5c8741de39cacafc12f448908bf34e960dcee8"
-  integrity sha1-KlyHQd45ysr8EvRIkIvzTpYNzug=
 
 "jsx-ast-utils@^2.4.1 || ^3.0.0", jsx-ast-utils@^3.1.0:
   version "3.2.0"

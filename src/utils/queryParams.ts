@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import jsurl from "jsurl";
+import jsurl from "@yaska-eu/jsurl2";
 import { DeepPartial, ParamsObject, Rule, State } from "../constants";
 import { HslColor } from "react-colorful";
 
@@ -44,14 +44,14 @@ export const getUrl = (
   bgColor: HslColor
 ) => {
   const paramsObj: ParamsObject = {
-    r: rules.map((rule) => ({ s: rule.step, r: rule.rotation, c: rule.color })),
     c: cycles,
     d: delay,
     a: startingAngle,
     b: bgColor,
+    r: rules.map((rule) => ({ s: rule.step, r: rule.rotation, c: rule.color })),
   };
 
-  const paramString = jsurl.stringify(paramsObj);
+  const paramString = jsurl.stringify(paramsObj, { short: true });
   const url = new URL(window.location.href);
   url.search = paramString;
   return url;
