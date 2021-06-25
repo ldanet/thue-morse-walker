@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent, FocusEvent, useCallback, useRef } from "react";
 
 type Props = {
   onChange: (value: number) => void;
@@ -6,21 +6,32 @@ type Props = {
 } & Omit<JSX.IntrinsicElements["input"], "onChange">;
 
 const FloatInput = ({ onChange, value: propsValue, ...inputProps }: Props) => {
-  const value = propsValue.toString(10);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      onChange(parseFloat(e.target.value));
+      const value = e.target.valueAsNumber;
+      if (!isNaN(value)) onChange(value);
+      console.log(value);
     },
     [onChange]
   );
 
+  const handleBlur = useCallback(
+    (e: FocusEvent<HTMLInputElement>) => {
+      e.target.value = propsValue.toString();
+    },
+    [propsValue]
+  );
+
   return (
     <input
+      ref={inputRef}
       type="number"
       step="any"
       onChange={handleChange}
-      value={value}
+      onBlur={handleBlur}
+      defaultValue={propsValue}
       {...inputProps}
     />
   );
