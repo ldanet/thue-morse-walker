@@ -1,5 +1,7 @@
 # Thue-Morse Walker
 
+[Visit the online app](http://thue-morse-walker.lydie.nz) and click "Draw"!
+
 This app lets you render Thue-Morse sequences as a picture. A good explanation of the process can be found in this article: [Thue-Morse navigating turtles](http://blog.zacharyabel.com/2012/01/thue-morse-navigating-turtles/).
 The article talks only about the binary sequence but I wanted to investigate with sequences in base 3, 4 or even more and see what the resulting pictures would look like.
 
